@@ -9,10 +9,10 @@
 <body>
     <header class="navbar">
         <div class="container">
-            <a href="{{ url_for('index') }}" class="logo">InvoiceApp</a>
+            <a href="{{ url_for('invoice.index') }}" class="logo">InvoiceApp</a>
             <nav>
-                <a href="{{ url_for('index') }}" class="btn btn-secondary">Daftar Faktur</a>
-                <a href="{{ url_for('create') }}" class="btn btn-primary">Buat Faktur Baru</a>
+                <a href="{{ url_for('invoice.index') }}" class="btn btn-secondary">Daftar Faktur</a>
+                <a href="{{ url_for('invoice.create') }}" class="btn btn-primary">Buat Faktur Baru</a>
             </nav>
         </div>
     </header>

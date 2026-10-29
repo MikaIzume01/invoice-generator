@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <h2>Buat Faktur / Nota Baru</h2>
+    <form method="POST" class="form">
+        <div class="form-row">
+            <div class="form-group">
+                <label>Nomor Faktur</label>
+                <input type="text" name="invoice_number" required placeholder="INV/2026/001">
+            </div>
+            <div class="form-group">
+                <label>Tanggal</label>
+                <input type="date" name="date" required>
+            </div>
+            <div class="form-group">
+                <label>Jatuh Tempo</label>
+                <input type="date" name="due_date">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Nama Klien / Pelanggan</label>
+                <input type="text" name="client_name" required placeholder="PT Maju Jaya">
+            </div>
+            <div class="form-group">
+                <label>Alamat Klien</label>
+                <textarea name="client_address" rows="2" placeholder="Jl. Pemuda No. 12, Surabaya"></textarea>
+            </div>
+        </div>
+
+        <h3 class="mt-4">Item Transaksi</h3>
+        <table class="table" id="items-table">
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Deskripsi / Nama Barang</th>
+                    <th style="width: 15%;">Jumlah (Qty)</th>
+                    <th style="width: 20%;">Harga Satuan (Rp)</th>
+                    <th style="width: 15%;">Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="item-rows">
+                <tr>
+                    <td><input type="text" name="description[]" required placeholder="Nama layanan / produk"></td>
+                    <td><input type="number" step="any" name="quantity[]" value="1" required onchange="calculateTotal()"></td>
+                    <td><input type="number" step="any" name="price[]" value="0" required onchange="calculateTotal()"></td>
+                    <td><button type="button" class="btn btn-sm btn-danger" onclick="removeRow(this)">Hapus</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-secondary mt-2" onclick="addRow()">+ Tambah Baris</button>
+
+        <div class="form-actions mt-4">
+            <button type="submit" class="btn btn-primary btn-lg">Simpan & Cetak Faktur</button>
+        </div>
+    </form>
+</div>
+
+<script>
+function addRow() {
+    const tbody = document.getElementById('item-rows');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td><input type="text" name="description[]" required placeholder="Nama layanan / produk"></td>
+        <td><input type="number" step="any" name="quantity[]" value="1" required onchange="calculateTotal()"></td>
+        <td><input type="number" step="any" name="price[]" value="0" required onchange="calculateTotal()"></td>
+        <td><button type="button" class="btn btn-sm btn-danger" onclick="removeRow(this)">Hapus</button></td>
+    `;
+    tbody.appendChild(tr);
+}
+
+function removeRow(btn) {
+    const tr = btn.closest('tr');
+    if (document.querySelectorAll('#item-rows tr').length > 1) {
+        tr.remove();
+    } else {
+        alert('Minimal harus ada satu item.');
+    }
+}
+
+function calculateTotal() {
+    // Optional live calculation hook if needed
+}
+</script>
+{% endblock %}

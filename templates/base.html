@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Nota & Faktur</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="navbar">
+        <div class="container">
+            <a href="{{ url_for('index') }}" class="logo">InvoiceApp</a>
+            <nav>
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">Daftar Faktur</a>
+                <a href="{{ url_for('create') }}" class="btn btn-primary">Buat Faktur Baru</a>
+            </nav>
+        </div>
+    </header>
+    <main class="container main-content">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Daftar Faktur & Nota</h2>
+        <a href="{{ url_for('create') }}" class="btn btn-primary">+ Buat Faktur</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>No. Faktur</th>
+                    <th>Klien</th>
+                    <th>Tanggal</th>
+                    <th>Jatuh Tempo</th>
+                    <th>Total (Rp)</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for inv in invoices %}
+                <tr>
+                    <td><strong>{{ inv.invoice_number }}</strong></td>
+                    <td>{{ inv.client_name }}</td>
+                    <td>{{ inv.date }}</td>
+                    <td>{{ inv.due_date }}</td>
+                    <td>Rp {{ "{:,.2f}".format(inv.total_amount).replace(',', 'X').replace('.', ',').replace('X', '.') }}</td>
+                    <td class="actions">
+                        <a href="{{ url_for('view_invoice', invoice_id=inv.id) }}" class="btn btn-sm btn-info">Lihat/Cetak</a>
+                        <form action="{{ url_for('delete_invoice', invoice_id=inv.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Hapus faktur ini?');">
+                            <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center">Belum ada faktur yang tersimpan.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

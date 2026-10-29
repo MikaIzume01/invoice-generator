@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card invoice-container">
+    <div class="invoice-header">
+        <div>
+            <h1>FAKTUR / NOTA</h1>
+            <p class="text-muted">No: <strong>{{ invoice.invoice_number }}</strong></p>
+        </div>
+        <div class="text-right">
+            <h3>Perusahaan Anda</h3>
+            <p>Jl. Raya Bisnis No. 45, Surabaya<br>Email: info@perusahaan.com | Telp: 08123456789</p>
+        </div>
+    </div>
+
+    <hr class="my-4">
+
+    <div class="invoice-details">
+        <div>
+            <h4>Kepada Yth:</h4>
+            <p><strong>{{ invoice.client_name }}</strong><br>{{ invoice.client_address | replace('\n', '<br>') | safe }}</p>
+        </div>
+        <div class="text-right">
+            <p><strong>Tanggal:</strong> {{ invoice.date }}</p>
+            <p><strong>Jatuh Tempo:</strong> {{ invoice.due_date if invoice.due_date else '-' }}</p>
+        </div>
+    </div>
+
+    <table class="table mt-4">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Deskripsi</th>
+                <th class="text-center">Qty</th>
+                <th class="text-right">Harga Satuan</th>
+                <th class="text-right">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ item.description }}</td>
+                <td class="text-center">{{ item.quantity }}</td>
+                <td class="text-right">Rp {{ "{:,.2f}".format(item.price).replace(',', 'X').replace('.', ',').replace('X', '.') }}</td>
+                <td class="text-right">Rp {{ "{:,.2f}".format(item.subtotal).replace(',', 'X').replace('.', ',').replace('X', '.') }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" class="text-right"><strong>Total Pembayaran:</strong></td>
+                <td class="text-right"><strong>Rp {{ "{:,.2f}".format(invoice.total_amount).replace(',', 'X').replace('.', ',').replace('X', '.') }}</strong></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="invoice-footer mt-4">
+        <p>Pembayaran dapat ditransfer melalui Rekening Bank BCA a.n Perusahaan Anda (No. Rek: 1234567890)</p>
+        <p class="text-center mt-4">Terima kasih atas kerja sama Anda!</p>
+    </div>
+
+    <div class="no-print mt-4 text-center">
+        <button onclick="window.print()" class="btn btn-primary">Cetak / Simpan PDF</button>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">Kembali</a>
+    </div>
+</div>
+{% endblock %}
